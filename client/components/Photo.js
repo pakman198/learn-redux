@@ -1,16 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
 
-const Photo = React.createClass({
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actionCreators from '../actions/actionCreators';
+
+class Photo extends React.Component {
 	render(){
 		const {post, i, comments} = this.props;
+
+		// console.log({post})
 
 		return (
 			<figure className="grid-figure">
 				<div className="grid-photo-rap">
 					<Link to={`/view/${post.code}`}>
-						<img src={post.display_src} alt={post.caption} className="grid-photo" />
+						<img src={post.display_url} alt={post.caption} className="grid-photo" />
 					</Link>
 
 					<CSSTransitionGroup transitionName="like"
@@ -34,8 +40,13 @@ const Photo = React.createClass({
 					</div>
 				</figcaption>
 			</figure>
-		)
+		);
 	}
-});
+	
+};
 
-export default Photo; 
+function mapDispatchToProps(dispatch){
+	return bindActionCreators(actionCreators, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(Photo); 

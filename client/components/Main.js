@@ -1,18 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
-const Main = React.createClass({
-	render(){
+class Main extends React.Component {
+	render() {
+
+		const children = React.Children.map(this.props.children, (child) => {
+			return React.cloneElement(child, this.props)
+		});
+
+		console.log({children})
+
 		return (
 			<div>
 				<h1>
 					<Link to="/">Reduxtagram</Link>
 				</h1>
 
-				{ React.cloneElement(this.props.children, this.props) }
+				{ children }
 			</div>
 		)
 	}
-});
+};
 
 export default Main;
