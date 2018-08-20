@@ -7,6 +7,7 @@ module.exports = {
     'webpack-hot-middleware/client',
     './client/reduxstagram'
   ],
+  mode: 'development',
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -14,14 +15,14 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   ],
   module: {
-    loaders: [
+    rules: [
     // js
     {
       test: /\.js$/,
-      loaders: ['babel'],
+      loaders: ['babel-loader'],
       include: path.join(__dirname, 'client')
     },
     // CSS

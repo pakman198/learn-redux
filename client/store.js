@@ -1,6 +1,7 @@
-import { createStore, compose } from 'redux';
-import { syncHistoryWithStore } from 'react-router-redux';
-import { browserHistory } from 'react-router';
+import { applyMiddleware, createStore, compose } from 'redux';
+import { createBrowserHistory } from 'history'
+import { connectRouter, routerMiddleware } from 'connected-react-router'
+
 
 import rootReducer from './reducers/index';
 
@@ -12,13 +13,22 @@ const defaultState = {
 	comments
 };
 
-const enhancers = compose(
-	window.devToolsExtension ? window.devToolsExtension() : f => f
-);
+// const enhancers = compose(
+// 	window.devToolsExtension ? window.devToolsExtension() : f => f
+// );
 
-const store = createStore(rootReducer, defaultState, enhancers);
+export const history = createBrowserHistory();
 
-export const history = syncHistoryWithStore(browserHistory, store);
+const store = createStore(
+  connectRouter(history)(rootReducer), // new root reducer with router state
+  defaultState,
+  compose(
+    applyMiddleware(
+      routerMiddleware(history), // for dispatching history actions
+    ),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+  ),
+)
 
 if(module.hot){
 	module.hot.accept('./reducers/', () => {
